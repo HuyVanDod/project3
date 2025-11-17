@@ -1,0 +1,95 @@
+.footer {
+  background-color: #f9f9f9;
+  padding: 40px 20px;
+  border-top: 1px solid #ddd;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.footer h4 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #111;
+}
+
+.footer p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer ul li {
+  margin-bottom: 8px;
+}
+
+.footer ul li a {
+  text-decoration: none;
+  color: #555;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.footer ul li a:hover {
+  color: #00a859; /* màu xanh lá cho hợp trái cây */
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.social-icons img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.social-icons img:hover {
+  transform: scale(1.2);
+}
+/* src/styles/components.css */
+
+/* Thanh trượt giá (range slider) */
+.price-range {
+  width: 100%;
+  height: 8px;
+  background: #000;
+  border-radius: 8px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.price-range::-webkit-slider-thumb {
+  background-color: #000;
+  border: 2px solid #000;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.price-range::-moz-range-thumb {
+  background-color: #000;
+  border: 2px solid #000;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+}

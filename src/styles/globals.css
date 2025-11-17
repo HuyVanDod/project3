@@ -1,0 +1,81 @@
+@layer base {
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600;700&display=swap');
+
+.font-ibm {
+  font-family: 'IBM Plex Serif', serif;
+}
+
+/* --- Swiper pagination chấm bi style --- */
+/* Xóa bottom cũ, KHÔNG để nó override pagination */
+.swiper-pagination-bullets {
+  left: 50% !important;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: #d1d5db;
+  opacity: 1;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  width: 14px;
+  background-color: #22c55e;
+}
+
+/* animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* --- Fix Swiper navigation & pagination căn giữa chuẩn --- */
+.product-swiper {
+  position: relative;
+  padding-bottom: 32px; /* ⭐ CHÌA KHÓA: chừa không gian cho pagination */
+}
+
+.product-swiper .swiper-button-prev,
+.product-swiper .swiper-button-next {
+  color: #000 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-swiper .swiper-button-prev:hover,
+.product-swiper .swiper-button-next:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.product-swiper .swiper-pagination {
+  position: absolute !important;
+  bottom: 0px !important;   /* ⭐ Đẩy pagination xuống dưới */
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  text-align: center !important;
+  z-index: 20 !important;
+  width: auto !important;
+}
+
+.product-swiper .swiper-pagination-bullets {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
