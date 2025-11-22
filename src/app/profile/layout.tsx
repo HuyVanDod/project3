@@ -59,7 +59,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
           <div className="border-t mt-6 pt-4">
             <Link
-              href="#"
+              href="/profile/reset-password"
               className="flex items-center gap-3 text-gray-600 hover:text-green-600 text-sm font-medium"
             >
               <KeyRound size={18} />
