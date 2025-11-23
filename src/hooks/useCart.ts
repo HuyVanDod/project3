@@ -50,33 +50,31 @@ export const useCart = (): UseCartReturn => {
   const [error, setError] = useState<string | null>(null);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
 
-  const normalizeCart = (data: any[]) =>
-    data.map((item) => {
-      let imageArray: string[] = [];
-      const variantImage = item.variant?.image;
-      if (typeof variantImage === "string" && variantImage.trim().length > 0) {
-        imageArray = [variantImage];
-      } else if (Array.isArray(variantImage)) {
-        imageArray = variantImage.filter(
-          (img) => typeof img === "string" && img.trim().length > 0
-        );
-      }
+  // 🔹 Chuẩn hóa cart, luôn dùng ảnh của product
+  // 🔹 Chỉ dùng ảnh của product làm ảnh chính
+const normalizeCart = (data: any[]): CartItem[] =>
+  data.map((item) => {
+    // Ưu tiên: gallery[0] → thumbnail → placeholder
+    const galleryImage = item.product?.images?.gallery?.[0]?.trim();
+    const thumbnail = item.product?.images?.thumbnail?.trim();
+    const finalImage = galleryImage || thumbnail || "/placeholder.png";
 
-      const product = {
-        name: item.product?.name || "Unknown",
-        price: item.variant?.price ?? 0,
-        images: imageArray,
-        slug: item.product?.slug || "",
-      };
+    const product = {
+      name: item.product?.name || "Unknown",
+      price: item.variant?.price ?? item.product?.price ?? 0, // giá vẫn dùng từ variant
+      images: [finalImage], // ❗ chỉ ảnh product
+      slug: item.product?.slug || "",
+    };
 
-      return {
-        id: item.id,
-        product_id: item.product?.id,
-        variant_id: item.variant?.id,
-        quantity: item.quantity,
-        product,
-      };
-    });
+    return {
+      id: item.id,
+      product_id: item.product?.id,
+      variant_id: item.variant?.id ?? null,
+      quantity: item.quantity,
+      product,
+    };
+  });
+
 
   const fetchCart = useCallback(async () => {
     if (!token) return;
@@ -85,7 +83,6 @@ export const useCart = (): UseCartReturn => {
       const res = await fetch("http://localhost:5000/api/v1/cart", {
         headers: { Authorization: `Bearer ${token}`, "Cache-Control": "no-cache" },
       });
-
       if (!res.ok) throw new Error(`Lỗi lấy giỏ hàng: ${res.status}`);
       const data = await res.json();
       const normalized = normalizeCart(data.data || data || []);
@@ -162,7 +159,6 @@ export const useCart = (): UseCartReturn => {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ variantId: finalVariantId, quantity }),
       });
-
       if (!res.ok) throw new Error(`Lỗi thêm: ${res.status}`);
       await fetchCart();
       localStorage.setItem("cart_updated", Date.now().toString());

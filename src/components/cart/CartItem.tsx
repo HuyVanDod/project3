@@ -1,10 +1,10 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { QuantitySelector } from "./QuantitySelector";
 import { Button } from "@/components/ui/Button";
 import { Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
 
 interface CartItemProps {
   item: {
@@ -15,16 +15,12 @@ interface CartItemProps {
       name: string;
       slug: string;
       price?: number;
-      images?: {
-        gallery?: string[];
-        thumbnail?: string;
-      };
+      images?: string[];   // ⬅️ SỬA: product.images giờ là mảng string[]
     };
     variant?: {
       id: number;
       name: string;
       price?: number;
-      image?: string;
       sku?: string;
     } | null;
   };
@@ -35,28 +31,13 @@ interface CartItemProps {
 export const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) => {
   const [imageSrc, setImageSrc] = useState<string>("/placeholder.png");
 
+  // ✅ Luôn dùng ảnh product.images[0] (đã normalize bên useCart)
   useEffect(() => {
-    // ✅ Ưu tiên ảnh theo thứ tự: variant → product.gallery[0] → product.thumbnail
-    const variantImage = item.variant?.image?.trim();
-    const galleryImage = item.product?.images?.gallery?.[0]?.trim();
-    const thumbnail = item.product?.images?.thumbnail?.trim();
-
-    const finalImage =
-      (variantImage && variantImage !== "")
-        ? variantImage
-        : galleryImage || thumbnail || "/placeholder.png";
-
-    console.log("🧺 Ảnh được chọn:", {
-      variantImage,
-      galleryImage,
-      thumbnail,
-      finalImage,
-    });
-
+    const finalImage = item.product?.images?.[0] || "/placeholder.png";
     setImageSrc(finalImage);
-  }, [item.variant?.image, item.product?.images]);
+  }, [item.product?.images]);
 
-  // ✅ Ưu tiên giá của variant → product
+  // ✅ Giá ưu tiên variant nếu có
   const price = item.variant?.price ?? item.product.price ?? 0;
 
   return (
@@ -70,24 +51,21 @@ export const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) =>
           height={64}
           className="object-cover rounded"
           onError={(e) => {
-            const target = e.currentTarget as HTMLImageElement;
-            target.src = "/placeholder.png";
+            (e.currentTarget as HTMLImageElement).src = "/placeholder.png";
           }}
         />
       </div>
 
       {/* Thông tin sản phẩm */}
       <div className="flex-1 ml-4">
-        <h3 className="font-semibold text-sm md:text-base">
-          {item.product.name}
-        </h3>
+        <h3 className="font-semibold text-sm md:text-base">{item.product.name}</h3>
 
-        {/* ✅ Hiển thị tên biến thể nếu có */}
+        {/* Hiển thị tên variant nếu có */}
         {item.variant?.name && (
           <p className="text-gray-500 text-sm">{item.variant.name}</p>
         )}
 
-        {/* ✅ Hiển thị giá */}
+        {/* Giá sản phẩm */}
         <p className="text-red-600 text-sm font-semibold">
           {price.toLocaleString("vi-VN")} đ
         </p>
