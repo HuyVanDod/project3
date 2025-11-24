@@ -105,7 +105,7 @@ export default function Header() {
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header className="w-full">
       {/* Top bar */}
       <div
         className="text-white text-sm py-3 px-4 flex justify-between items-center"

@@ -5,18 +5,21 @@ import { usePathname } from "next/navigation";
 import { User, MapPin, Bell, KeyRound, TicketPercent, Heart, Package } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { useNotification } from "@/app/contexts/NotificationContext";
 
 const menuItems = [
   { name: "Thông tin tài khoản", href: "/profile", icon: User },
   { name: "Đơn hàng", href: "/profile/orders", icon: Package },
   { name: "Địa chỉ", href: "/profile/addresses", icon: MapPin },
-  { name: "Thông báo", href: "#", icon: Bell },
+  { name: "Thông báo", href: "/profile/notifications", icon: Bell },
   { name: "Coupons", href: "#", icon: TicketPercent },
   { name: "Sản phẩm yêu thích", href: "/profile/wishlist", icon: Heart },
 ];
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { notifications } = useNotification();
+  const unread = notifications.filter((n) => !n.read).length;
 
   return (
     <div className="bg-gray-50 min-h-screen py-10">
@@ -25,13 +28,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
         <aside className="w-64 bg-white rounded-2xl shadow-sm p-6 h-fit">
           <div className="flex flex-col items-center mb-8">
             <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-              <Image
-                src="/default-avatar.png"
-                alt="Avatar"
-                width={80}
-                height={80}
-                className="object-cover"
-              />
+              <Image src="/default-avatar.png" alt="Avatar" width={80} height={80} className="object-cover" />
             </div>
             <p className="mt-3 font-semibold text-gray-700">ádsdsadsad</p>
           </div>
@@ -40,18 +37,27 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
             {menuItems.map((item) => {
               const Icon = item.icon;
               const active = pathname === item.href;
+              const isNotification = item.name === "Thông báo";
+
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition ${
-                    active
-                      ? "text-green-600 bg-green-50"
-                      : "text-gray-600 hover:text-green-600 hover:bg-gray-50"
+                  className={`relative flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition ${
+                    active ? "text-green-600 bg-green-50" : "text-gray-600 hover:text-green-600 hover:bg-gray-50"
                   }`}
                 >
-                  <Icon size={18} />
-                  {item.name}
+                  <div className="flex items-center gap-3">
+                    <Icon size={18} />
+                    {item.name}
+                  </div>
+
+                  {/* Badge */}
+                  {isNotification && unread > 0 && (
+                    <span className="absolute top-1 right-3 text-xs w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center">
+                      {unread}
+                    </span>
+                  )}
                 </Link>
               );
             })}

@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import { CartProvider } from "@/app/contexts/CartContext";
 import { OrderProvider } from "@/app/contexts/OrderContext";
 import { WishlistProvider } from "@/app/contexts/WishlistContext"; // 🩷 thêm dòng này
+import { NotificationProvider } from "@/app/contexts/NotificationContext";
 
 export const metadata: Metadata = {
   title: "Fruity Fruit",
@@ -26,8 +27,12 @@ export default function RootLayout({
           <OrderProvider>
             <WishlistProvider> {/* 🩷 thêm dòng này */}
               <ClientLayout>
+                    <NotificationProvider>
+
                 {children}
                 <Toaster position="top-right" richColors />
+                    </NotificationProvider>
+
               </ClientLayout>
             </WishlistProvider> {/* 🩷 đóng lại */}
           </OrderProvider>

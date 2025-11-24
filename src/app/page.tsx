@@ -15,6 +15,15 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // 🔹 Banner slider state
+  const banners = [
+    "/assets/images/banner11.png",
+    "/assets/images/banner10.png",
+    "/assets/images/banner12.png",
+    "/assets/images/banner13.png",
+  ];
+  const [currentBanner, setCurrentBanner] = useState(0);
+
   // 🔹 Fetch sản phẩm nổi bật và mới nhất
   useEffect(() => {
     const fetchProducts = async () => {
@@ -49,27 +58,28 @@ export default function HomePage() {
     fetchProducts();
   }, []);
 
+  // 🔹 Tự động chuyển banner
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % banners.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="w-full font-ibm text-gray-800">
-      {/* 🔹 Hero Banner */}
-      <section className="relative w-full h-[400px] md:h-[500px]">
-        <Image
-          src="/assets/images/Promotion.png"
-          alt="Banner khuyến mãi"
-          fill
-          priority
-          className="object-cover"
-        />
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white bg-black/40">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow">
-            Khuyến mãi 9.9
-          </h1>
-          <p className="mb-6 text-lg md:text-xl">Giảm giá lên đến 90%</p>
-          <button className="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg text-white font-semibold transition">
-            Mua ngay
-          </button>
-        </div>
-      </section>
+      {/* 🔹 Hero Banner Slider – GIỮ TỈ LỆ 16:7 */}
+      {/* 🔹 Hero Banner Slider */}
+<section className="relative w-full aspect-[13/6] bg-white flex items-center justify-center">
+  <Image
+    src={banners[currentBanner]}
+    alt={`Banner ${currentBanner}`}
+    fill
+    priority
+    className="object-contain"
+  />
+</section>
+
 
       {/* 🔹 Thông tin dịch vụ */}
       <ServiceInfo />
@@ -100,7 +110,9 @@ export default function HomePage() {
           </button>
         </div>
 
-        {loading && <p className="text-center text-gray-500 py-10">Đang tải sản phẩm...</p>}
+        {loading && (
+          <p className="text-center text-gray-500 py-10">Đang tải sản phẩm...</p>
+        )}
         {error && <p className="text-center text-red-500 py-10">Lỗi: {error}</p>}
 
         {!loading && !error && (
@@ -110,8 +122,8 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* 🔹 Banner giữa */}
-      <section className="mt-12 w-full h-[250px] relative">
+      {/* 🔹 Banner giữa – GIỮ TỈ LỆ */}
+      <section className="mt-12 w-full aspect-[16/7] relative">
         <Image
           src="/assets/images/image7.png"
           alt="Banner giữa"
@@ -132,29 +144,26 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* 🔹 Banner nhóm 3 ảnh */}
-      {/* 🔹 Banner nhóm 3 ảnh */}
-<section className="max-w-[1200px] mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 px-6">
-  {[
-    "/assets/images/banner1.png",
-    "/assets/images/banner2.png",
-    "/assets/images/banner3.png",
-  ].map((img, i) => (
-    <div
-      key={i}
-      className="rounded-2xl overflow-hidden shadow hover:shadow-lg transition"
-    >
-      <Image
-        src={img}
-        alt={`Banner ${i + 1}`}
-        width={400}
-        height={250}
-        className="w-full h-[220px] object-cover"
-      />
-    </div>
-  ))}
-</section>
-
+      {/* 🔹 Banner nhóm 3 ảnh – GIỮ TỈ LỆ NHƯ BANNER  */}
+      <section className="max-w-[1200px] mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 px-6">
+        {[
+          "/assets/images/banner1.png",
+          "/assets/images/banner2.png",
+          "/assets/images/banner3.png",
+        ].map((img, i) => (
+          <div
+            key={i}
+            className="rounded-2xl overflow-hidden shadow hover:shadow-lg transition relative aspect-[16/7]"
+          >
+            <Image
+              src={img}
+              alt={`Banner ${i + 1}`}
+              fill
+              className="object-cover"
+            />
+          </div>
+        ))}
+      </section>
     </div>
   );
 }
