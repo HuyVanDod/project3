@@ -13,17 +13,21 @@ export default function MomoReturnPage() {
       try {
         const orderId = searchParams.get("orderId");
         const resultCode = searchParams.get("resultCode"); // 0 = thành công
-        const message = searchParams.get("message");
+        const msg = searchParams.get("message");
 
-        console.log("🔁 MomoReturn params:", { orderId, resultCode, message });
+        console.log("🔁 MomoReturn params:", { orderId, resultCode, msg });
 
-        // ✅ Nếu thanh toán thành công
         if (resultCode === "0") {
           setStatus("success");
           setMessage("Thanh toán MoMo thành công! 🎉");
+
+          // ✅ Chuyển hướng sang trang checkout/success với orderId sau 1.5s
+          setTimeout(() => {
+            window.location.href = `/checkout/success?orderId=${orderId}`;
+          }, 1500);
         } else {
           setStatus("failed");
-          setMessage("Thanh toán thất bại hoặc bị hủy.");
+          setMessage(msg || "Thanh toán thất bại hoặc bị hủy.");
         }
       } catch (err) {
         console.error("❌ Lỗi xác nhận thanh toán:", err);
@@ -48,12 +52,7 @@ export default function MomoReturnPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-green-600 mb-3">Thanh toán thành công!</h1>
           <p className="text-gray-700 mb-6">{message}</p>
-          <a
-            href="/orders"
-            className="bg-pink-500 text-white px-5 py-2 rounded-full hover:bg-pink-600 transition"
-          >
-            Xem đơn hàng
-          </a>
+          <p className="text-gray-500 text-sm">Đang chuyển hướng...</p>
         </div>
       )}
 
