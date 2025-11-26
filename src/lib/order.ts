@@ -60,21 +60,16 @@ export async function createOrder(payload: CreateOrderPayload): Promise<CreateOr
 
   // Đảm bảo format đúng cho backend
   const normalizedPayload = {
-    ...payload,
-    shippingOption: payload.shippingOption
-      ? {
-          fee: payload.shippingOption.fee ?? 0,
-          service_id:
-            payload.shippingOption.service_id ||
-            payload.shippingOption.serviceId ||
-            null,
-          service_type_id:
-            payload.shippingOption.service_type_id ||
-            payload.shippingOption.serviceTypeId ||
-            2,
-        }
-      : undefined,
-  };
+  ...payload,
+  shippingOption: payload.shippingOption
+    ? {
+        fee: payload.shippingOption.fee ?? 0,
+        service_id: payload.shippingOption.service_id ?? null,
+        service_type_id: payload.shippingOption.service_type_id ?? 2,
+      }
+    : undefined,
+};
+
 
   console.log("📦 Payload gửi:", normalizedPayload);
 

@@ -94,18 +94,26 @@ export default function ProductDetailModal({
 
   // Buy Now
   const handleBuyNow = async () => {
-    try {
-      await addToCart(Number(product.id), selectedVariant?.id ?? null, quantity, {
+  try {
+    await addToCart(
+      Number(product.id),
+      selectedVariant?.id ?? null,
+      quantity,
+      {
         name: product.name,
         price: selectedVariant?.price ?? parseFloat(product.price),
-        image: selectedVariant?.image ?? product.images?.thumbnail,
-      });
+images: [
+      selectedVariant?.image ?? product.images?.thumbnail ?? ""
+    ],    slug: product.slug      }
+    );
 
-      router.push("/cart");
-    } catch {
-      toast.error("Không thể thực hiện mua ngay");
-    }
-  };
+    router.push("/cart");
+  } catch {
+    toast.error("Không thể thực hiện mua ngay");
+  }
+};
+
+
 
   const toggleWishlistHandler = async () => {
     try {

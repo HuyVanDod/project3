@@ -162,7 +162,7 @@ export interface CreateOrderPayload {
 export interface CreateOrderResponse {
   success: boolean;
   message: string;
-  order: Order;
+  order: Order; // chứa id, payment_method, payment_status, v.v
   shipment: {
     tracking_number: string;
     carrier: string;
@@ -171,5 +171,6 @@ export interface CreateOrderResponse {
   };
   paymentUrl: string | null;
 }
+
 
 export type PaymentMethod = 'cod' | 'momo';

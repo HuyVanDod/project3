@@ -32,9 +32,14 @@ interface Address {
 export function AddressSelector({
   selectedAddress,
   onSelect,
+  readOnlyDefault = false, // <-- thêm đây
+
+  
 }: {
   selectedAddress: Address | null;
   onSelect: (address: Address) => void;
+  readOnlyDefault?: boolean; // optional
+
 }) {
   const [showModal, setShowModal] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -67,7 +72,7 @@ export function AddressSelector({
     // ✅ Nếu trong localStorage có địa chỉ mặc định → tự chọn lại
     const savedId = localStorage.getItem("defaultAddressId");
     if (savedId) {
-      const found = data.find((a) => String(a.id) === savedId);
+const found = data.find((a: Address) => String(a.id) === savedId);
       if (found) {
         onSelect(found);
         return;
@@ -75,7 +80,7 @@ export function AddressSelector({
     }
 
     // Nếu chưa có lưu mặc định, chọn địa chỉ đầu tiên hoặc có is_default = true
-    const defaultAddr = data.find((a) => a.is_default) || data[0];
+    const defaultAddr = data.find((a: Address) => a.is_default) || data[0];
     if (defaultAddr) {
       onSelect(defaultAddr);
       localStorage.setItem("defaultAddressId", String(defaultAddr.id));

@@ -8,6 +8,8 @@ export interface Product {
     gallery: string[];
     thumbnail: string;
   };
+    slug: string; // thêm đây
+
   variants?: {
     id: string;
     name: string;

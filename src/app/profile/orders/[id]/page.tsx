@@ -131,10 +131,10 @@ export default function OrderDetailPage() {
             <Truck size={18} /> Giao hàng
           </div>
           <p className="text-sm text-gray-600">
-            Người nhận: <span className="font-medium">{order.recipient_name}</span>
+            Người nhận: <span className="font-medium">{order.customer_name}</span>
           </p>
           <p className="text-sm text-gray-600">
-            SĐT: <span className="font-medium">{order.recipient_phone}</span>
+            SĐT: <span className="font-medium">{order.customer_phone}</span>
           </p>
           <p className="text-sm text-gray-600">
             Địa chỉ: <span className="font-medium">{order.shipping_address}</span>

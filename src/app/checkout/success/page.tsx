@@ -74,9 +74,14 @@ export default function CheckoutSuccessPage() {
             Mã đơn hàng: {order.order_number}
           </h2>
           <p>
-            <strong>Ngày đặt:</strong>{" "}
-            {formatPrice(new Date(order.created_at).getTime())} {/* Nếu muốn dùng formatPrice cho ngày, có thể viết lại */}
-          </p>
+  <strong>Ngày đặt:</strong>{" "}
+  {new Date(order.created_at).toLocaleDateString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  })}
+</p>
+
           <p>
             <strong>Trạng thái:</strong> {order.order_status}
           </p>

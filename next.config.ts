@@ -30,7 +30,8 @@ const nextConfig: NextConfig = {
          "cdn.abphotos.link",
           "phunuvietnam.mediacdn.vn",
            "media.vietnamplus.vn",
-            "vinfruits.com"
+            "vinfruits.com",
+             "upload.wikimedia.org"
 
     ],
   },

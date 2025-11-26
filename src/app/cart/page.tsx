@@ -48,7 +48,7 @@ export default function CartPage() {
       try {
         const addresses = await getCustomerAddresses();
         if (addresses && addresses.length > 0) {
-          const defaultAddr = addresses.find((a) => a.is_default) || addresses[0];
+          const defaultAddr = addresses.find((a: any) => a.is_default) || addresses[0];
           setSelectedAddress(defaultAddr);
           setSelectedAddressId(String(defaultAddr.id));
         }
@@ -138,7 +138,7 @@ export default function CartPage() {
       };
 
       const orderRes = await createOrder(payload);
-      const orderId = orderRes.order?.id || orderRes.order_id;
+      const orderId = orderRes.order?.id || orderRes.order.id;
       if (!orderId) throw new Error("Không thể tạo đơn hàng!");
 
       // COD
@@ -149,26 +149,21 @@ export default function CartPage() {
       }
 
       // MoMo
-      if (paymentMethod === "momo") {
-        const payUrl =
-          orderRes.payment?.payUrl ||
-          orderRes.payUrl ||
-          orderRes.url ||
-          orderRes.paymentUrl;
-
-        if (payUrl) {
-          clearCart();
-          window.location.href = payUrl;
-        } else {
-          throw new Error("Không nhận được URL thanh toán MoMo từ server!");
-        }
-      }
-    } catch (err: any) {
-      console.error("❌ Lỗi thanh toán:", err);
-      alert(err.message || "Thanh toán thất bại, vui lòng thử lại!");
-    } finally {
-      setProcessing(false);
+     if (paymentMethod === "momo") {
+    const payUrl = orderRes.paymentUrl;
+    if (!payUrl) {
+      throw new Error("Không nhận được URL thanh toán MoMo từ server!");
     }
+
+    clearCart(); // Xóa giỏ hàng trước khi redirect
+    window.location.href = payUrl;
+  }
+} catch (err: any) {
+  console.error("❌ Lỗi thanh toán:", err);
+  alert(err.message || "Thanh toán thất bại, vui lòng thử lại!");
+} finally {
+  setProcessing(false);
+}
   };
 
   if (loading) return <p className="text-center py-10">Đang tải...</p>;

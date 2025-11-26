@@ -11,7 +11,7 @@ interface CartItemProps {
     id: number;
     quantity: number;
     product: {
-      id: number;
+      id?: number;   // ⬅️ optional
       name: string;
       slug: string;
       price?: number;
